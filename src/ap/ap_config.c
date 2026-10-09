@@ -1917,3 +1917,18 @@ bool hostapd_config_sae_ext_key(const struct hostapd_bss_config *conf)
 {
 	return wpa_key_mgmt_sae_ext_key(hostapd_config_all_key_mgmt(conf));
 }
+
+
+bool hostapd_pqc_enabled(const struct hostapd_bss_config *conf)
+{
+	unsigned int i;
+
+	for (i = 0;
+	     conf->security_profiles && conf->security_profiles[i] >= 0; i++) {
+		if (conf->security_profiles[i] >= 16 &&
+		    conf->security_profiles[i] <= 23)
+			return true;
+	}
+
+	return false;
+}
